@@ -1,12 +1,11 @@
 class Cell {
   PVector pos, dir;
-  float angle, size;
+  float angle;
 
   Cell(float x, float y) {
     this.pos = new PVector(x, y);
     this.dir = PVector.random2D().setMag(1);
-    this.angle = PI / 4;
-    this.size = 1;
+    this.angle = PI / 3;
   }
 
   void Update() {

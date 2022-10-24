@@ -17,15 +17,18 @@ void setup() {
   noStroke();
   background(0);
   
-  for (int i = 0; i < 4000; i++) {
+  for (int i = 0; i < 2000; i++) {
     c.add(new Cell(random(width), random(height)));
   }
+  
+  noStroke();
 }
 
 
 
 void draw() {
   fill(0, 3);
+  
   rect(0, 0, width, height);
   image(map, 0, 0);
   loadPixels();
@@ -39,18 +42,19 @@ void draw() {
 
   if (mousePressed) {
     push();
-    fill(240, 252, 17);
+    fill(255);
     circle(mouseX, mouseY, 50);
     pop();
   }
+  
+  filter(BLUR, 1);
 }
 
 void drawCells(ArrayList<Cell> cells) {
-  fill(240, 252, 17);
-  noStroke();
+  fill(255);
   for (int i = 0; i < cells.size(); i++) {
 
-    circle(c.get(i).pos.x, c.get(i).pos.y, c.get(i).size+1);
+    rect(c.get(i).pos.x, c.get(i).pos.y, 2, 2);
   }
 }
 
