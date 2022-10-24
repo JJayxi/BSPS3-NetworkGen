@@ -55,11 +55,12 @@ public class Environment implements GAEnv{
                 int r = c.getRed();
                 int g = c.getGreen();
                 int b = c.getBlue();
-                int avg = (r + g + b) / 3;
+                int avg = r;
                         
                 map[i][j] = 255 - avg;
             }
         }
+        
         return map;
     }
     

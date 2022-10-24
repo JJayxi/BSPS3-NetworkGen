@@ -11,7 +11,7 @@ public class NodeStep {
     private GeneticAlgorithm ga;
     
     public NodeStep(BufferedImage img, int nodeRadius, int nodeNumber, int proximityPenalty,
-                    int populationSize, float crossoverRate, float mutationRate) {
+                    int populationSize, double crossoverRate, double mutationRate) {
         envDisplay = new EnvDisplay(img, nodeRadius);
         env = new Environment(nodeNumber, nodeRadius, proximityPenalty, img);
         ga = new GeneticAlgorithm(populationSize, crossoverRate, mutationRate, env);

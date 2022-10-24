@@ -1,7 +1,7 @@
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/view/NodePanel.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/model/gaenv/Environment.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/view/MainFrame.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/model/gaenv/GAEnv.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/model/ga/GeneticAlgorithm.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/model/gaenv/EnvDisplay.java
-/home/jason/Documents/uni/3sem/bsp/code/BspNetworkGen/src/main/java/model/NodeStep.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/model/ga/GeneticAlgorithm.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/model/gaenv/EnvDisplay.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/model/NodeStep.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/view/NodePanel.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/model/gaenv/Environment.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/view/MainFrame.java
+/home/jason/Documents/uni/3sem/bsp/BSPS3-NetworkGen/BspNetworkGen/src/main/java/model/gaenv/GAEnv.java
