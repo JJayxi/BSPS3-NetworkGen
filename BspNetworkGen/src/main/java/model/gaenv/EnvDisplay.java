@@ -3,8 +3,9 @@ package model.gaenv;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import model.Displayer;
 
-public class EnvDisplay {
+public class EnvDisplay implements Displayer {
     private int nodeRadius;
     private BufferedImage map;
     private int[] currentSol;
@@ -20,6 +21,7 @@ public class EnvDisplay {
         currentSol = sol;
     }
     
+    @Override
     public void display(Graphics2D g, int width, int height) {
         g.drawImage(map, 0, 0, null);
         if(currentSol == null) return;

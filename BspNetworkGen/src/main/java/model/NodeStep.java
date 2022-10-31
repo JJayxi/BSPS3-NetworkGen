@@ -31,6 +31,10 @@ public class NodeStep {
         env.setNumNodes(nodeNumber);
     }
     
+    public Environment getEnvironment() {
+        return env;
+    }
+    
     public void setProximityPenalty(int proximityPenalty) {
         env.setProxPenalty(proximityPenalty);
     }

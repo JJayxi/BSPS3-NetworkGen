@@ -6,12 +6,8 @@ package view;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import model.ga.GeneticAlgorithm;
+import model.Displayer;
 import model.gaenv.EnvDisplay;
-import model.gaenv.Environment;
 
 /**
  *
@@ -22,7 +18,7 @@ public class NodePanel extends javax.swing.JPanel {
     /**
      * Creates new form NodePanel
      */
-    private EnvDisplay envD;
+    private Displayer displayer;
 
     public NodePanel() {
         initComponents();
@@ -38,14 +34,14 @@ public class NodePanel extends javax.swing.JPanel {
         envD.setSol(ga.getBest().a);*/
     }
 
-    public void setEnvDisplay(EnvDisplay envD) {
-        this.envD = envD;
+    public void setDisplayer(Displayer envD) {
+        this.displayer = envD;
     }
     
     @Override
     protected void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
-        if(envD != null)envD.display(g, WIDTH, HEIGHT);
+        if(displayer != null)displayer.display(g, WIDTH, HEIGHT);
 
     }
 

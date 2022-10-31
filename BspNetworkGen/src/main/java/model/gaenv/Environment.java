@@ -23,6 +23,14 @@ public class Environment implements GAEnv{
         preprocess();
     }
     
+    public int getWidth() {
+        return map[0].length;
+    }
+    
+    public int getHeight() {
+        return map.length;
+    }
+    
     public void setMap(BufferedImage mapImage) {
         map = imageToMap(mapImage);
         preprocess();
@@ -93,8 +101,20 @@ public class Environment implements GAEnv{
     }
     
     @Override
+    public boolean verify(int[] sol) {
+        if(numNodes * 2 != sol.length)return false;
+        for(int i = 0; i < numNodes; i++) {
+         if(sol[i * 2] < 0 || sol[i * 2] >= map[0].length)return false;
+         if(sol[i * 2 + 1] < 0 || sol[i * 2 + 1] >= map.length)return false;
+        }
+        
+        return true;
+    }
+    
+    @Override
     public int eval(int[] sol) {
         if(sol.length != 2*numNodes)return Integer.MIN_VALUE;
+        
         
         int totalReach = 0;
         for(int i = 0; i < numNodes; i++) {
@@ -113,6 +133,16 @@ public class Environment implements GAEnv{
         
         
         return totalReach - totalPenalty;
+    }
+    
+    public int[] exportForSlimeMold(int[] sol) {
+        int[] ar = new int[numNodes * 3];
+        for(int i = 0; i < numNodes; i++)  {
+            ar[i * 3] = sol[i * 2];
+            ar[i * 3 + 1] = sol[i * 2 + 1];
+            ar[i * 3 + 2] = reach(sol[i * 2], sol[i * 2 + 1]);
+        }
+        return ar;
     }
     
     public int penalty(int x1, int y1, int x2, int y2) {

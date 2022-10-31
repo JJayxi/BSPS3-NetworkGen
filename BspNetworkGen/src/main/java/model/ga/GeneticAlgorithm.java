@@ -105,11 +105,14 @@ public class GeneticAlgorithm {
     }
     
     public ArrayList<Pair<int[], Integer>> mutate(ArrayList<Pair<int[], Integer>> population) {
+        int maxDev = 200;
         for(int i = 0; i < population.size(); i++) {
             for(int j = 0; j < env.getSolLen(); j++) {
                 if(Math.random() > mutationRate / env.getSolLen())continue;
-                int maxDev = 200;
-                population.get(i).a[j] += (int)(Math.random() * maxDev - maxDev / 2); 
+                int dev = (int)(Math.random() * maxDev - maxDev / 2);
+                population.get(i).a[j] += dev;
+                if(env.verify(population.get(i).a)) continue;
+                population.get(i).a[j] -= dev; 
             }
             
         }
@@ -137,6 +140,10 @@ public class GeneticAlgorithm {
     
     public Pair<int[], Integer> getBest() {
         return population.get(0);
+    }
+    
+    public int[] getBestSol() {
+        return population.get(0).a;
     }
     
     public Pair<int[], Integer> getWorst() {
