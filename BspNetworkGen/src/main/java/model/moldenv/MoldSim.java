@@ -165,7 +165,20 @@ public class MoldSim implements Displayer{
         maxforscale /= 256;
         
 	for(int i = 0; i < sol.length / 3; i++) {
-	    swarm.add(new DataAgent(sol[i * 3], sol[i * 3 + 1], sol[i * 3 + 2] / maxforscale));
+            int x = sol[i * 3];
+            int y = sol[i * 3 + 1];
+            int w = sol[i * 3 + 2] / maxforscale;
+            int r = 20;
+            int n = 30;
+            double da = Math.PI * 2 / n;
+            for(int j = 0; j < n; j++) {
+                float nx = x + (float)(Math.cos(da * j) * r * (Math.random() * 0.3 + 0.7));
+                System.out.println(nx + " vs . " + x);
+                float ny = y + (float)(Math.sin(da * j) * r);
+                if(nx >= 0 && nx < width && ny >= 0 && ny < height)
+                swarm.add(new DataAgent(nx, ny, 255));
+            }
+	    
 	}
         
         map = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
