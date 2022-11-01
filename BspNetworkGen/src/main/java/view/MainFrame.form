@@ -494,7 +494,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="proximityPenaltyLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="10"/>
+            <Property name="text" type="java.lang.String" value="100"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="currentGenLabel">

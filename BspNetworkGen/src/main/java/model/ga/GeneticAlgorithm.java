@@ -32,6 +32,20 @@ public class GeneticAlgorithm {
         
         generatePopulation();
     }
+
+    public int getPopulationSize() {
+	return populationSize;
+    }
+
+    public double getCrossoverRate() {
+	return crossoverRate;
+    }
+
+    public double getMutationRate() {
+	return mutationRate;
+    }
+    
+    
     
     public void reset() {
         population = new ArrayList<>();

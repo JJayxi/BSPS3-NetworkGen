@@ -230,7 +230,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         nodeRadiusLabel.setText("50");
 
-        proximityPenaltyLabel.setText("10");
+        proximityPenaltyLabel.setText("100");
 
         currentGenLabel.setText("0");
 
@@ -550,7 +550,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void mutationRateSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mutationRateSliderStateChanged
         double rate = mutationRateSlider.getValue()/(double)mutationRateSlider.getMaximum() / 5.;
         nodeStep.setMutationRate(rate);
-        mutationLabel.setText("" + rate);
+        mutationLabel.setText("" + Math.round(rate * 100) / 100.);
     }//GEN-LAST:event_mutationRateSliderStateChanged
 
     private void nodeNumberSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nodeNumberSliderStateChanged
@@ -625,8 +625,8 @@ public class MainFrame extends javax.swing.JFrame {
         
         drawPanel.setDisplayer(moldsim);
         
-        timer = new Timer(20, (t) -> {
-            for (int j = 0; j < 30; j++) {
+        timer = new Timer(10, (t) -> {
+            for (int j = 0; j < 20; j++) {
                 moldsim.updateMap();
             }
             drawPanel.repaint();

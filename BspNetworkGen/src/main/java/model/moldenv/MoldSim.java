@@ -112,6 +112,22 @@ public class MoldSim implements Displayer{
 	public void move() {
 	    this.pos.x = wrap(this.pos.x + this.dir.x, map.getWidth());
 	    this.pos.y = wrap(this.pos.y + this.dir.y, map.getHeight());
+	    //this.pos.x = this.pos.x + this.dir.x;
+	    /*if(pos.x >= map.getWidth()) {
+		pos.x = map.getWidth() - 1;
+		dir.x = -dir.x;
+	    } else if (pos.x < 0) {
+		pos.x = 0;
+		dir.x = -dir.x;
+	    }
+	    this.pos.y = this.pos.y + this.dir.y;
+	    if(pos.y >= map.getHeight()) {
+		pos.y = map.getHeight() - 1;
+		dir.y = -dir.y;
+	    } else if (pos.y < 0) {
+		pos.y = 0;
+		dir.y = -dir.y;
+	    }*/
 	}
         
 
@@ -122,7 +138,6 @@ public class MoldSim implements Displayer{
         
         public DataAgent(float x, float y, int dataWeight) {
             super(x, y);
-            System.out.println((byte)dataWeight + " compared to int " + dataWeight);
             this.dataWeight = dataWeight;
         }
         
@@ -173,8 +188,7 @@ public class MoldSim implements Displayer{
             double da = Math.PI * 2 / n;
             for(int j = 0; j < n; j++) {
                 float nx = x + (float)(Math.cos(da * j) * r * (Math.random() * 0.3 + 0.7));
-                System.out.println(nx + " vs . " + x);
-                float ny = y + (float)(Math.sin(da * j) * r);
+                float ny = y + (float)(Math.sin(da * j) * r * (Math.random() * 0.3 + 0.7));
                 if(nx >= 0 && nx < width && ny >= 0 && ny < height)
                 swarm.add(new DataAgent(nx, ny, 255));
             }

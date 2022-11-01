@@ -58,4 +58,15 @@ public class NodeStep {
     public GeneticAlgorithm getGA() {
         return ga;
     }
+    
+    @Override
+    public String toString() {
+	return "Model: Environment[node radius: " + env.getNodeRadius() + 
+		", node number: " + env.getNumNodes() +
+		", proximity penalty: " + env.getProxPenalty() +
+		"], GA[population size: " + ga.getPopulationSize() +
+		", crossover rate: " + ga.getCrossoverRate()+
+		", mutation rate: " + ga.getMutationRate() +
+		"]";
+    }
 }

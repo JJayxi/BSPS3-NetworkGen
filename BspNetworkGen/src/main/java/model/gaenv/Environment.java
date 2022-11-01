@@ -30,6 +30,20 @@ public class Environment implements GAEnv{
     public int getHeight() {
         return map.length;
     }
+
+    public int getNumNodes() {
+	return numNodes;
+    }
+
+    public int getNodeRadius() {
+	return nodeRadius;
+    }
+
+    public int getProxPenalty() {
+	return proxPenalty;
+    }
+    
+    
     
     public void setMap(BufferedImage mapImage) {
         map = imageToMap(mapImage);
