@@ -13,6 +13,9 @@ public class MainFrame extends javax.swing.JFrame {
 
     
     private NodeStep nodeStep;
+    private MoldSim moldsim;
+    private final int NODE_STEP_STATE = 0, MOLD_SIM_STATE = 1;
+    private int current_state  = NODE_STEP_STATE;
     
     public MainFrame() {
         initComponents();
@@ -34,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
         mutationLabel.setText("" + (mutationRateSlider.getValue()/(double)mutationRateSlider.getMaximum() / 5.));
         
         drawPanel.setDisplayer(nodeStep.getEnvDisplay());
+        updateView();
     }
 
     /** This method is called from within the constructor to
@@ -46,7 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
+        nodeStepPanel = new javax.swing.JPanel();
         loadMapButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,14 +87,24 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         bestFitnessLabel = new javax.swing.JLabel();
         resetButton = new javax.swing.JButton();
-        drawPanel = new view.NodePanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
         startSlimeSimulationButton = new javax.swing.JButton();
+        drawPanel = new view.NodePanel();
+        slimeMoldPanel = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        turningAngleSlider = new javax.swing.JSlider();
+        offsetLengthSlider = new javax.swing.JSlider();
+        agentCountSlider = new javax.swing.JSlider();
+        agentCountLabel = new javax.swing.JLabel();
+        offsetLengthLabel = new javax.swing.JLabel();
+        turningAngleLabel = new javax.swing.JLabel();
+        slimeResetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 456));
+        nodeStepPanel.setPreferredSize(new java.awt.Dimension(400, 456));
 
         loadMapButton.setText("Load Map");
         loadMapButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,27 +130,24 @@ public class MainFrame extends javax.swing.JFrame {
         populationSlider.setMajorTickSpacing(50);
         populationSlider.setMaximum(400);
         populationSlider.setMinorTickSpacing(10);
+        populationSlider.setToolTipText("");
+        populationSlider.setValue(200);
         populationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 populationSliderStateChanged(evt);
             }
         });
-        populationSlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                populationSliderMouseClicked(evt);
-            }
-        });
 
         generationSlider.setMaximum(1000);
         generationSlider.setToolTipText("");
-        generationSlider.setValue(200);
+        generationSlider.setValue(400);
         generationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 generationSliderStateChanged(evt);
             }
         });
 
-        crossoverRateSlider.setValue(20);
+        crossoverRateSlider.setValue(80);
         crossoverRateSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 crossoverRateSliderStateChanged(evt);
@@ -145,7 +156,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         mutationRateSlider.setMaximum(400);
         mutationRateSlider.setToolTipText("");
-        mutationRateSlider.setValue(100);
         mutationRateSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mutationRateSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -163,7 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel10.setText("Proximity penalty:");
 
         nodeNumberSlider.setMaximum(30);
-        nodeNumberSlider.setValue(11);
+        nodeNumberSlider.setValue(8);
         nodeNumberSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 nodeNumberSliderStateChanged(evt);
@@ -186,7 +196,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        oneGenButton.setText("Run 1 Generation");
+        oneGenButton.setText("Run specified generations");
         oneGenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 oneGenButtonActionPerformed(evt);
@@ -247,167 +257,173 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        startSlimeSimulationButton.setText("Slime Mold");
+        startSlimeSimulationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startSlimeSimulationButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout nodeStepPanelLayout = new javax.swing.GroupLayout(nodeStepPanel);
+        nodeStepPanel.setLayout(nodeStepPanelLayout);
+        nodeStepPanelLayout.setHorizontalGroup(
+            nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nodeStepPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel7)
-                            .addComponent(worstRadioButton)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(oneGenButton)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, nodeStepPanelLayout.createSequentialGroup()
+                                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(contGenButton)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel10))
+                                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(proximityPenaltySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(nodeRadiusSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(nodeNumberSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, nodeStepPanelLayout.createSequentialGroup()
+                                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, nodeStepPanelLayout.createSequentialGroup()
+                                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(proximityPenaltySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(nodeRadiusSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(nodeNumberSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel3)
-                                                    .addComponent(jLabel4)
-                                                    .addComponent(jLabel5)
-                                                    .addComponent(jLabel6))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(crossoverRateSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                                                        .addComponent(generationSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(populationSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                    .addComponent(mutationRateSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(2, 2, 2))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                        .addComponent(bestRadioButton)
-                                                        .addGap(49, 49, 49)
-                                                        .addComponent(jLabel14)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(bestFitnessLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jLabel11)
-                                                            .addComponent(medianRadioButton))
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabel13)))
-                                                .addGap(18, 18, 18)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(crossoverRateSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                                                .addComponent(generationSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(populationSlider, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(mutationRateSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(2, 2, 2))
+                                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                                        .addComponent(bestRadioButton)
+                                        .addGap(49, 49, 49)
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(bestFitnessLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel7)
+                                .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                                    .addComponent(oneGenButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(contGenButton)))
+                            .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(medianRadioButton))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel13)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(populationSizeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(generationLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(crossoverLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nodeNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nodeRadiusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(proximityPenaltyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(currentGenLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                                .addComponent(mutationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, nodeStepPanelLayout.createSequentialGroup()
+                        .addComponent(worstRadioButton)
+                        .addGap(468, 468, 468))
+                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                                .addComponent(loadMapButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(populationSizeLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(generationLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(crossoverLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(nodeNumberLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(nodeRadiusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(proximityPenaltyLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(currentGenLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(mutationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(loadMapButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(resetButton)))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(resetButton))
+                            .addComponent(startSlimeSimulationButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        nodeStepPanelLayout.setVerticalGroup(
+            nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(nodeStepPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadMapButton)
                     .addComponent(resetButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3)
                                 .addComponent(populationSizeLabel))
                             .addComponent(populationSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel4)
                                 .addComponent(generationLabel))
                             .addComponent(generationSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(crossoverLabel)
                             .addComponent(jLabel5)))
                     .addComponent(crossoverRateSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(mutationLabel)
                             .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7))
                     .addComponent(mutationRateSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
                         .addComponent(nodeNumberLabel))
                     .addComponent(nodeNumberSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
                         .addComponent(nodeRadiusLabel))
                     .addComponent(nodeRadiusSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(nodeStepPanelLayout.createSequentialGroup()
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(proximityPenaltyLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(oneGenButton)
                             .addComponent(contGenButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
                             .addComponent(currentGenLabel)
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(nodeStepPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(bestRadioButton)
                             .addComponent(jLabel14)
-                            .addComponent(bestFitnessLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(worstRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(medianRadioButton))
+                            .addComponent(bestFitnessLabel)))
                     .addComponent(proximityPenaltySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(worstRadioButton)
+                .addGap(8, 8, 8)
+                .addComponent(medianRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(startSlimeSimulationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -427,31 +443,105 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Liberation Sans", 1, 20)); // NOI18N
         jLabel12.setText("Slime Mold");
 
-        startSlimeSimulationButton.setText("Do Slime Sim");
-        startSlimeSimulationButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startSlimeSimulationButtonActionPerformed(evt);
+        jLabel15.setText("Agent Count:");
+
+        jLabel16.setText("Offset Length:");
+
+        jLabel17.setText("Turning Angle:");
+
+        turningAngleSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                turningAngleSliderStateChanged(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        offsetLengthSlider.setMajorTickSpacing(10);
+        offsetLengthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                offsetLengthSliderStateChanged(evt);
+            }
+        });
+
+        agentCountSlider.setMaximum(5000);
+        agentCountSlider.setMinimum(400);
+        agentCountSlider.setValue(3000);
+        agentCountSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                agentCountSliderStateChanged(evt);
+            }
+        });
+
+        agentCountLabel.setText("jLabel18");
+
+        offsetLengthLabel.setText("jLabel19");
+
+        turningAngleLabel.setText("jLabel20");
+
+        slimeResetButton.setText("Reset");
+        slimeResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                slimeResetButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout slimeMoldPanelLayout = new javax.swing.GroupLayout(slimeMoldPanel);
+        slimeMoldPanel.setLayout(slimeMoldPanelLayout);
+        slimeMoldPanelLayout.setHorizontalGroup(
+            slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(slimeMoldPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
-                    .addComponent(startSlimeSimulationButton))
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(slimeResetButton))
+                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                        .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel16)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(offsetLengthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel15)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(agentCountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(turningAngleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(agentCountLabel)
+                                    .addComponent(offsetLengthLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(turningAngleLabel))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        slimeMoldPanelLayout.setVerticalGroup(
+            slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(slimeMoldPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(startSlimeSimulationButton)
+                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(agentCountSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(agentCountLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(offsetLengthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(offsetLengthLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(turningAngleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(turningAngleLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(slimeResetButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -462,19 +552,23 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(nodeStepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(slimeMoldPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
+                .addComponent(nodeStepPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(slimeMoldPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(drawPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -492,29 +586,53 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void updateView() {
-        int[] sol = null;
-        if(bestRadioButton.isSelected()) {
-            sol = nodeStep.getGA().getBest().a;
-        } else if (worstRadioButton.isSelected()) {
-            sol = nodeStep.getGA().getWorst().a;
-        } else {
-            sol = nodeStep.getGA().getMedian().a;
+        if(current_state == NODE_STEP_STATE) {
+            slimeMoldPanel.setVisible(false);
+            nodeStepPanel.setVisible(true);
+            
+            drawPanel.setDisplayer(nodeStep.getEnvDisplay());
+            
+            int[] sol = null;
+            if(bestRadioButton.isSelected()) {
+                sol = nodeStep.getGA().getBest().a;
+            } else if (worstRadioButton.isSelected()) {
+                sol = nodeStep.getGA().getWorst().a;
+            } else {
+                sol = nodeStep.getGA().getMedian().a;
+            }
+
+            nodeStep.getEnvDisplay().setSol(sol);
+            drawPanel.repaint();
+
+            currentGenLabel.setText("" + nodeStep.getGA().getCurrentGeneration());
+            bestFitnessLabel.setText("" + nodeStep.getGA().getBest().b);
+            
+            populationSizeLabel.setText("" + populationSlider.getValue());
+            generationLabel.setText("" + generationSlider.getValue());
+            double rate = crossoverRateSlider.getValue()/(double)crossoverRateSlider.getMaximum();
+            crossoverLabel.setText("" + rate);
+            rate = mutationRateSlider.getValue()/(double)mutationRateSlider.getMaximum() / 5.;
+            mutationLabel.setText("" + Math.round(rate * 100) / 100.);
+            
+            nodeNumberLabel.setText("" + nodeNumberSlider.getValue());
+            nodeRadiusLabel.setText("" + nodeRadiusSlider.getValue());
+            proximityPenaltyLabel.setText("" + proximityPenaltySlider.getValue());
+        } else if (current_state == MOLD_SIM_STATE) {
+            slimeMoldPanel.setVisible(true);
+            nodeStepPanel.setVisible(false);
+            
+            drawPanel.setDisplayer(moldsim);
+            
+            agentCountLabel.setText(""+ agentCountSlider.getValue());
+            offsetLengthLabel.setText(""+ offsetLengthSlider.getValue());
+            turningAngleLabel.setText(""+ Math.round((agentCountSlider.getValue() * Math.PI / 200) * 100) / 100.);
+            
         }
-        
-        nodeStep.getEnvDisplay().setSol(sol);
-        drawPanel.repaint();
-        
-        currentGenLabel.setText("" + nodeStep.getGA().getCurrentGeneration());
-        bestFitnessLabel.setText("" + nodeStep.getGA().getBest().b);
     }
     
     private void bestRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bestRadioButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bestRadioButtonActionPerformed
-
-    private void populationSliderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_populationSliderMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_populationSliderMouseClicked
 
     private void loadMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMapButtonActionPerformed
         JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
@@ -616,16 +734,20 @@ public class MainFrame extends javax.swing.JFrame {
         updateView();
     }//GEN-LAST:event_resetButtonActionPerformed
     
-    private MoldSim moldsim;
+   
     private void startSlimeSimulationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSlimeSimulationButtonActionPerformed
-        moldsim = new MoldSim(3000, 45, (float)(Math.PI / 3), 
-                nodeStep.getEnvironment().exportForSlimeMold(nodeStep.getGA().getBestSol()),
-                nodeStep.getEnvironment().getWidth(), 
-                nodeStep.getEnvironment().getHeight());
+        current_state = MOLD_SIM_STATE;
+        slimeResetButton.doClick();
+        updateView();
         
+        
+        drawPanel.setDisplayer(null);
+        drawPanel.repaint();
+        repaint();
         drawPanel.setDisplayer(moldsim);
+        drawPanel.repaint();
         
-        timer = new Timer(10, (t) -> {
+        timer = new Timer(20, (t) -> {
             for (int j = 0; j < 20; j++) {
                 moldsim.updateMap();
             }
@@ -636,6 +758,32 @@ public class MainFrame extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_startSlimeSimulationButtonActionPerformed
+
+    private void slimeResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slimeResetButtonActionPerformed
+        if(timer.isRunning())timer.stop();
+        moldsim = new MoldSim(
+                agentCountSlider.getValue(),
+                offsetLengthSlider.getValue(),
+                (float)(agentCountSlider.getValue() * Math.PI / 200), 
+                nodeStep.getEnvironment().exportForSlimeMold(nodeStep.getGA().getBestSol()),
+                nodeStep.getEnvironment().getWidth(), 
+                nodeStep.getEnvironment().getHeight());
+    }//GEN-LAST:event_slimeResetButtonActionPerformed
+
+    private void agentCountSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_agentCountSliderStateChanged
+        slimeResetButton.doClick();
+        updateView();
+    }//GEN-LAST:event_agentCountSliderStateChanged
+
+    private void offsetLengthSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_offsetLengthSliderStateChanged
+        slimeResetButton.doClick();
+        updateView();
+    }//GEN-LAST:event_offsetLengthSliderStateChanged
+
+    private void turningAngleSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_turningAngleSliderStateChanged
+        slimeResetButton.doClick();
+        updateView();
+    }//GEN-LAST:event_turningAngleSliderStateChanged
 
     /**
      * @param args the command line arguments
@@ -674,6 +822,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel agentCountLabel;
+    private javax.swing.JSlider agentCountSlider;
     private javax.swing.JLabel bestFitnessLabel;
     private javax.swing.JRadioButton bestRadioButton;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -690,6 +840,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -698,8 +851,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton loadMapButton;
     private javax.swing.JRadioButton medianRadioButton;
     private javax.swing.JLabel mutationLabel;
@@ -708,13 +859,20 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSlider nodeNumberSlider;
     private javax.swing.JLabel nodeRadiusLabel;
     private javax.swing.JSlider nodeRadiusSlider;
+    private javax.swing.JPanel nodeStepPanel;
+    private javax.swing.JLabel offsetLengthLabel;
+    private javax.swing.JSlider offsetLengthSlider;
     private javax.swing.JButton oneGenButton;
     private javax.swing.JLabel populationSizeLabel;
     private javax.swing.JSlider populationSlider;
     private javax.swing.JLabel proximityPenaltyLabel;
     private javax.swing.JSlider proximityPenaltySlider;
     private javax.swing.JButton resetButton;
+    private javax.swing.JPanel slimeMoldPanel;
+    private javax.swing.JButton slimeResetButton;
     private javax.swing.JButton startSlimeSimulationButton;
+    private javax.swing.JLabel turningAngleLabel;
+    private javax.swing.JSlider turningAngleSlider;
     private javax.swing.JRadioButton worstRadioButton;
     // End of variables declaration//GEN-END:variables
 

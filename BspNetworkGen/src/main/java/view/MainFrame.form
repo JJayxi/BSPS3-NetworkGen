@@ -30,9 +30,10 @@
           <Group type="102" alignment="1" attributes="0">
               <Component id="drawPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" min="-2" pref="506" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" max="32767" attributes="0"/>
+              <Component id="nodeStepPanel" min="-2" pref="518" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="slimeMoldPanel" min="-2" pref="510" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -40,18 +41,23 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel1" pref="594" max="32767" attributes="0"/>
+              <Component id="nodeStepPanel" pref="594" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="drawPanel" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="slimeMoldPanel" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="drawPanel" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
-          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="nodeStepPanel">
       <Properties>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[400, 456]"/>
@@ -61,113 +67,106 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="worstRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="oneGenButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="contGenButton" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace min="191" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="proximityPenaltySlider" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="nodeRadiusSlider" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="nodeNumberSlider" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                          <Component id="crossoverRateSlider" alignment="0" pref="350" max="32767" attributes="0"/>
-                                                          <Component id="generationSlider" alignment="0" max="32767" attributes="0"/>
-                                                          <Component id="populationSlider" alignment="0" max="32767" attributes="0"/>
-                                                      </Group>
-                                                      <Component id="mutationRateSlider" min="-2" pref="350" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <Group type="103" groupAlignment="1" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="bestRadioButton" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                                                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace max="-2" attributes="0"/>
-                                                          <Component id="bestFitnessLabel" max="32767" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="1" attributes="0">
-                                                          <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                              <Component id="medianRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                          </Group>
-                                                          <EmptySpace min="262" max="32767" attributes="0"/>
-                                                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="populationSizeLabel" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="generationLabel" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="crossoverLabel" max="32767" attributes="0"/>
-                                      <Component id="nodeNumberLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="nodeRadiusLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="proximityPenaltyLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="currentGenLabel" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="mutationLabel" min="-2" pref="58" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="proximityPenaltySlider" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="nodeRadiusSlider" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="nodeNumberSlider" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="loadMapButton" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="resetButton" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                  <Component id="crossoverRateSlider" alignment="0" pref="350" max="32767" attributes="0"/>
+                                                  <Component id="generationSlider" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="populationSlider" alignment="0" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Component id="mutationRateSlider" min="-2" pref="350" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="bestRadioButton" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="bestFitnessLabel" max="32767" attributes="0"/>
+                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="oneGenButton" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="contGenButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="medianRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="262" max="32767" attributes="0"/>
+                                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="populationSizeLabel" alignment="1" max="32767" attributes="0"/>
+                              <Component id="generationLabel" alignment="1" max="32767" attributes="0"/>
+                              <Component id="crossoverLabel" max="32767" attributes="0"/>
+                              <Component id="nodeNumberLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nodeRadiusLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="proximityPenaltyLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="currentGenLabel" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="mutationLabel" min="-2" pref="58" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="worstRadioButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="468" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="loadMapButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="resetButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="startSlimeSimulationButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -239,7 +238,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="proximityPenaltyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -261,13 +260,15 @@
                               <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="bestFitnessLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="worstRadioButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="medianRadioButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="proximityPenaltySlider" min="-2" max="-2" attributes="0"/>
+                      <Component id="proximityPenaltySlider" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="worstRadioButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Component id="medianRadioButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="startSlimeSimulationButton" min="-2" pref="25" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -323,17 +324,18 @@
             <Property name="majorTickSpacing" type="int" value="50"/>
             <Property name="maximum" type="int" value="400"/>
             <Property name="minorTickSpacing" type="int" value="10"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="value" type="int" value="200"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="populationSliderStateChanged"/>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="populationSliderMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSlider" name="generationSlider">
           <Properties>
             <Property name="maximum" type="int" value="1000"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
-            <Property name="value" type="int" value="200"/>
+            <Property name="value" type="int" value="400"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="generationSliderStateChanged"/>
@@ -341,7 +343,7 @@
         </Component>
         <Component class="javax.swing.JSlider" name="crossoverRateSlider">
           <Properties>
-            <Property name="value" type="int" value="20"/>
+            <Property name="value" type="int" value="80"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="crossoverRateSliderStateChanged"/>
@@ -351,7 +353,6 @@
           <Properties>
             <Property name="maximum" type="int" value="400"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
-            <Property name="value" type="int" value="100"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Default Cursor"/>
             </Property>
@@ -386,7 +387,7 @@
         <Component class="javax.swing.JSlider" name="nodeNumberSlider">
           <Properties>
             <Property name="maximum" type="int" value="30"/>
-            <Property name="value" type="int" value="11"/>
+            <Property name="value" type="int" value="8"/>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="nodeNumberSliderStateChanged"/>
@@ -412,7 +413,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="oneGenButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Run 1 Generation"/>
+            <Property name="text" type="java.lang.String" value="Run specified generations"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="oneGenButtonActionPerformed"/>
@@ -525,6 +526,14 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetButtonActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="startSlimeSimulationButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Slime Mold"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startSlimeSimulationButtonActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="view.NodePanel" name="drawPanel">
@@ -547,7 +556,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel2">
+    <Container class="javax.swing.JPanel" name="slimeMoldPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -555,10 +564,44 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="startSlimeSimulationButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="slimeResetButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="offsetLengthSlider" min="-2" pref="340" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="agentCountSlider" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="turningAngleSlider" min="-2" pref="339" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="agentCountLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="offsetLengthLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="turningAngleLabel" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="255" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -568,7 +611,25 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="startSlimeSimulationButton" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="agentCountSlider" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="agentCountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="offsetLengthSlider" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="offsetLengthLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="turningAngleSlider" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="turningAngleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="slimeResetButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -583,12 +644,65 @@
             <Property name="text" type="java.lang.String" value="Slime Mold"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="startSlimeSimulationButton">
+        <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Do Slime Sim"/>
+            <Property name="text" type="java.lang.String" value="Agent Count:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel16">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Offset Length:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel17">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Turning Angle:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSlider" name="turningAngleSlider">
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="turningAngleSliderStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JSlider" name="offsetLengthSlider">
+          <Properties>
+            <Property name="majorTickSpacing" type="int" value="10"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startSlimeSimulationButtonActionPerformed"/>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="offsetLengthSliderStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JSlider" name="agentCountSlider">
+          <Properties>
+            <Property name="maximum" type="int" value="5000"/>
+            <Property name="minimum" type="int" value="400"/>
+            <Property name="value" type="int" value="3000"/>
+          </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="agentCountSliderStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="agentCountLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jLabel18"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="offsetLengthLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jLabel19"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="turningAngleLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jLabel20"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="slimeResetButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reset"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="slimeResetButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

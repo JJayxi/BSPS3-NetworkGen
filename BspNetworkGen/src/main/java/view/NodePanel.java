@@ -4,10 +4,10 @@
  */
 package view;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import model.Displayer;
-import model.gaenv.EnvDisplay;
 
 /**
  *
@@ -41,7 +41,12 @@ public class NodePanel extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
-        if(displayer != null)displayer.display(g, WIDTH, HEIGHT);
+        if(displayer != null)displayer.display(g, getWidth(), getHeight());
+        else {
+            System.out.println("here");
+            g.setColor(Color.black);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
 
     }
 

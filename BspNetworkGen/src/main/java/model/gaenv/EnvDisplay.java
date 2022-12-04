@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import model.Displayer;
+import java.awt.geom.AffineTransform;
 
 public class EnvDisplay implements Displayer {
     private int nodeRadius;
@@ -23,6 +24,13 @@ public class EnvDisplay implements Displayer {
     
     @Override
     public void display(Graphics2D g, int width, int height) {
+        double zoomX = (double)width / map.getWidth();
+        double zoomY = (double)height / map.getHeight();
+        //Affine Transformation on graphics2d to zoom out
+        AffineTransform at = new AffineTransform();
+        at.scale(zoomX, zoomY);
+        g.setTransform(at);
+
         g.drawImage(map, 0, 0, null);
         if(currentSol == null) return;
         for (int i = 0; i < currentSol.length / 2; i++) {
@@ -32,6 +40,7 @@ public class EnvDisplay implements Displayer {
             g.setColor(new Color(255, 0, 0));
             g.fillOval(x-4, y-4, 8, 8);
         }
+        
     }
 
     public void setMap(BufferedImage img) {

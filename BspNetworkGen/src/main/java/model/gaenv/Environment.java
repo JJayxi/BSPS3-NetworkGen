@@ -22,6 +22,10 @@ public class Environment implements GAEnv{
         System.out.println("Preprocessing map");
         preprocess();
     }
+
+    public int getMaxValue() {
+        return map.length;
+    }
     
     public int getWidth() {
         return map[0].length;
@@ -125,6 +129,17 @@ public class Environment implements GAEnv{
         return true;
     }
     
+        @Override
+    public int[] correct(int[] sol) {
+        for(int i = 0; i < numNodes; i++) {
+            if(sol[i * 2] < 0) sol[i * 2] = 0;
+            else if(sol[i * 2] >= map[0].length)sol[i * 2] = map[0].length - 1;
+            if(sol[i * 2 + 1] < 0) sol[i * 2 + 1] = 0;
+            else if(sol[i * 2 + 1] >= map.length)sol[i * 2 + 1] = map.length - 1;
+        }
+        return sol;
+    }
+    
     @Override
     public int eval(int[] sol) {
         if(sol.length != 2*numNodes)return Integer.MIN_VALUE;
@@ -162,7 +177,7 @@ public class Environment implements GAEnv{
     public int penalty(int x1, int y1, int x2, int y2) {
         int dist = (int) Point2D.distance(x1, y1, x2, y2) + 1;
         
-        return 50000 * proxPenalty / dist;
+        return 10000 * proxPenalty / dist;
     }
     
 }
