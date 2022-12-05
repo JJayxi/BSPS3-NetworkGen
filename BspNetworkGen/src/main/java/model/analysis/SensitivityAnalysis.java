@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class SensitivityAnalysis {
 
     private static NodeStep nodestep;
-    private static int samples = 50;
+    private static int samples = 100;
     private static double mutationRate = 0.03, crossoverRate = 0.8;
     private static int generationNumber = 1000, populationCount = 100;
 

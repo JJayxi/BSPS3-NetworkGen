@@ -101,7 +101,6 @@ public class GeneticAlgorithm {
     public ArrayList<Pair<int[], Integer>> crossover(ArrayList<Pair<int[], Integer>> selected) {
         ArrayList<Pair<int[], Integer>> crossed = new ArrayList<>();
         for(int i = 0; i < selected.size(); i++)crossed.add(selected.get(i));
-        
         for(int i = 0; i < populationSize - selected.size(); i++) {
             
             Pair<int[], Integer> parent1 = selected.get((int)(Math.random() * selected.size()));
