@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("resource/testmap.png"));
+            img = ImageIO.read(new File("resource/france/templatemap_quartersize.png"));
         } catch (Exception e) {}
         
         nodeStep = new NodeStep(img,
@@ -173,7 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel10.setText("Proximity penalty:");
 
         nodeNumberSlider.setMaximum(30);
-        nodeNumberSlider.setValue(8);
+        nodeNumberSlider.setValue(20);
         nodeNumberSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 nodeNumberSliderStateChanged(evt);
@@ -181,15 +181,21 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         nodeRadiusSlider.setMajorTickSpacing(10);
+        nodeRadiusSlider.setValue(25);
         nodeRadiusSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 nodeRadiusSliderStateChanged(evt);
             }
         });
+        nodeRadiusSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                nodeRadiusSliderMouseReleased(evt);
+            }
+        });
 
         proximityPenaltySlider.setMaximum(200);
         proximityPenaltySlider.setToolTipText("");
-        proximityPenaltySlider.setValue(120);
+        proximityPenaltySlider.setValue(40);
         proximityPenaltySlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 proximityPenaltySliderStateChanged(evt);
@@ -678,7 +684,6 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nodeNumberSliderStateChanged
 
     private void nodeRadiusSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nodeRadiusSliderStateChanged
-        nodeStep.setNodeRadius(nodeRadiusSlider.getValue());
         nodeRadiusLabel.setText("" + nodeRadiusSlider.getValue());
         updateView();
     }//GEN-LAST:event_nodeRadiusSliderStateChanged
@@ -784,6 +789,10 @@ public class MainFrame extends javax.swing.JFrame {
         slimeResetButton.doClick();
         updateView();
     }//GEN-LAST:event_turningAngleSliderStateChanged
+
+    private void nodeRadiusSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nodeRadiusSliderMouseReleased
+        nodeStep.setNodeRadius(nodeRadiusSlider.getValue());
+    }//GEN-LAST:event_nodeRadiusSliderMouseReleased
 
     /**
      * @param args the command line arguments

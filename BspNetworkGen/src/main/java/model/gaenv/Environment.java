@@ -60,6 +60,7 @@ public class Environment implements GAEnv{
 
     public void setNodeRadius(int nodeRadius) {
         this.nodeRadius = nodeRadius;
+        preprocess();
     }
 
     public void setProxPenalty(int proxPenalty) {

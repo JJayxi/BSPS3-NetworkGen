@@ -97,25 +97,33 @@ public class GeneticAlgorithm {
         return selected;
     }
     
+    private int[] selectAgent(ArrayList<Pair<int[], Integer>> population) {
+        Pair<int[], Integer> p1 = population.get((int)(Math.random() * populationSize)); //chooseForTournament(population.size()));
+        Pair<int[], Integer> p2 = population.get((int)(Math.random() * populationSize)); //chooseForTournament(population.size()));
+        if(p1.b > p2.b) return p1.a.clone();
+        return p2.a.clone();
+    }
     
-    public ArrayList<Pair<int[], Integer>> crossover(ArrayList<Pair<int[], Integer>> selected) {
+    public ArrayList<Pair<int[], Integer>> crossover(ArrayList<Pair<int[], Integer>> population) {
         ArrayList<Pair<int[], Integer>> crossed = new ArrayList<>();
-        for(int i = 0; i < selected.size(); i++)crossed.add(selected.get(i));
         
-        for(int i = 0; i < populationSize - selected.size(); i++) {
-            
-            Pair<int[], Integer> parent1 = selected.get((int)(Math.random() * selected.size()));
-            Pair<int[], Integer> parent2 = selected.get((int)(Math.random() * selected.size()));
-            
-            int[] crossoverSol = new int[env.getSolLen()];
-            int crossoverPoint = (int)(Math.random() * env.getSolLen() / 2);
-            for(int j = 0; j < env.getSolLen(); j++) {
-                if(j >= crossoverPoint * 2) crossoverSol[j] = parent1.a[j];
-                else crossoverSol[j] = parent2.a[j];
+        for(int i = 0; i < populationSize; i++) {
+            if(Math.random() < crossoverRate) {
+                int[] parent1 = selectAgent(population);
+                int[] parent2 = selectAgent(population);
+                
+                int[] crossoverSol = new int[env.getSolLen()];
+                int crossoverPoint = (int)(Math.random() * env.getSolLen()); /// 2);
+                for(int j = 0; j < env.getSolLen(); j++) {
+                    if(j >= crossoverPoint /** 2*/) crossoverSol[j] = parent1[j];
+                    else crossoverSol[j] = parent2[j];
+                }
+                crossed.add(new Pair(crossoverSol, 0));
+            } else {
+                crossed.add(new Pair(selectAgent(population), 0));            
             }
-            
-            crossed.add(new Pair(crossoverSol, 0));
         }
+        
         return crossed;
     }
     
@@ -124,7 +132,7 @@ public class GeneticAlgorithm {
     //}
 
     public ArrayList<Pair<int[], Integer>> mutate(ArrayList<Pair<int[], Integer>> population) {
-        int maxDev = 150; //
+        int maxDev = 300; //
         for(int i = 0; i < population.size(); i++) {
             for(int j = 0; j < env.getSolLen(); j++) {
                 if(Math.random() > mutationRate)continue;
@@ -154,8 +162,7 @@ public class GeneticAlgorithm {
     }
     
     public void performGeneration() {
-       ArrayList<Pair<int[], Integer>> pop = select();
-       pop = crossover(pop);
+       ArrayList<Pair<int[], Integer>> pop = crossover(population);
        pop = mutate(pop);
        pop = evaluatePopulation(pop);
        pop.sort((Pair<int[], Integer> p1, Pair<int[], Integer> p2) -> p2.b - p1.b);

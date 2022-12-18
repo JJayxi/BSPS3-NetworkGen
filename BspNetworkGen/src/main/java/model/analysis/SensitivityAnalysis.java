@@ -9,18 +9,21 @@ import java.util.Scanner;
 public class SensitivityAnalysis {
 
     private static NodeStep nodestep;
-    private static int samples = 50;
+    private static int samples = 100;
     private static double mutationRate = 0.03, crossoverRate = 0.8;
     private static int generationNumber = 1000, populationCount = 100;
+    private static double generationagent = generationNumber * populationCount;
 
-    private static double delta_p = 0.5;
 
     private static int F() {
+        //System.out.println("Enter F");
         nodestep.setMutationRate(mutationRate);
         nodestep.setCrossoverRate(crossoverRate);
         nodestep.setPopulationSize(populationCount);
+        //System.out.println("finish preparing; " + (generationNumber * populationCount));
 
         int averagescore = 0;
+        long timestart = System.nanoTime();
         for (int i = 0; i < samples; i++) {
             for (int j = 0; j < generationNumber; j++) {
                 nodestep.getGA().performGeneration();
@@ -28,71 +31,19 @@ public class SensitivityAnalysis {
             averagescore += nodestep.getGA().getBest().b / samples;
             nodestep.getGA().reset();
         }
+        long timeend = System.nanoTime();
+        //System.out.println(((timeend - timestart) / 1000) / 1000.0 + "ms");
         return averagescore;
-    }
-
-    private static double sensitivityM(double mr) {
-        double temp = mutationRate;
-        mutationRate = mr;
-        double delta = temp * delta_p;
-        int f = F();
-        mutationRate = mr + delta;
-        int fd = F();
-
-        double sensitivity = (fd - f) / delta;
-        mutationRate = temp;
-        return sensitivity;
-    }
-
-    private static double sensitivityC(double cr) {
-        double temp = crossoverRate;
-        crossoverRate = cr;
-        double delta = temp * delta_p;
-        int f = F();
-        crossoverRate = cr + delta;
-        int fd = F();
-
-        double sensitivity = (fd - f) / delta;
-        crossoverRate = temp;
-        return sensitivity;
-    }
-
-    private static double sensitivityP(int p) {
-        int temp = populationCount;
-        populationCount = p;
-        int delta = (int) (temp * delta_p);
-        int f = F();
-        populationCount = p + delta;
-        int fd = F();
-
-        double sensitivity = (fd - f) / delta;
-        populationCount = temp;
-        return sensitivity;
-    }
-
-    private static double sensitivityG(int g) {
-        int temp = generationNumber;
-        generationNumber = g;
-        int delta = (int) (temp * delta_p);
-        int f = F();
-        generationNumber = g + delta;
-        int fd = F();
-
-        double sensitivity = (fd - f) / delta;
-        generationNumber = temp;
-        return sensitivity;
-    }
-
-    private static void samplePrint() {
-        System.out.print(F());
     }
 
     private static void changeVar(double to, int vari) {
         switch (vari) {
             case 0:
-                populationCount = (int) to;
+                generationNumber = (int) (generationagent / to);
+                populationCount = (int) to;                
                 break;
             case 1:
+                populationCount = (int) (generationagent / to);
                 generationNumber = (int) to;
                 break;
             case 2:
@@ -104,35 +55,21 @@ public class SensitivityAnalysis {
         }
     }
 
-    private static double analyseVar(double val, int vari) {
+    public static double getVar(int vari) {
         switch (vari) {
             case 0:
-                int temp = populationCount;
-                populationCount = (int) val;
-                double score = F();
-                populationCount = temp;
-                return score;
+                return populationCount;
             case 1:
-                temp = generationNumber;
-                generationNumber = (int) val;
-                score = F();
-                generationNumber = temp;
-                return score;
+                return generationNumber;
             case 2:
-                double temp2 = crossoverRate;
-                crossoverRate = val;
-                score = F();
-                crossoverRate = temp2;
-                return score;
+                return crossoverRate;
             case 3:
-                temp2 = mutationRate;
-                mutationRate = val;
-                score = F();
-                mutationRate = temp2;
-                return score;
+                return mutationRate;
         }
         return 0;
     }
+    
+
 
     public static void main(String[] args) {
         BufferedImage img = null;
@@ -198,14 +135,6 @@ public class SensitivityAnalysis {
             }
             //</editor-fold>
 
-            //System.out.println("Parameter to analyse:");
-            //System.out.println("1. Population size");
-            //System.out.println("2. Generation number");
-            //System.out.println("3. Crossover rate");
-            //System.out.println("4. Mutation rate");
-            //int param_analyse = scanner.nextInt() - 1;
-            //System.out.println("Enter the value at which you wish to analyse this parameter:");
-            //double valueAnalyseAt = scanner.nextDouble();
             System.out.println("Parameter to change:");
             System.out.println("1. Population size");
             System.out.println("2. Generation number");
@@ -220,6 +149,7 @@ public class SensitivityAnalysis {
             System.out.print("Number of steps:");
             int nsteps = scanner.nextInt();
 
+            double beforeChange = getVar(param_change);
             double dstep = (endval - startval) / nsteps;
 
             for (int i = 0; i < nsteps; i++) {
@@ -228,6 +158,7 @@ public class SensitivityAnalysis {
                 double sensitivity = F();//analyseVar(valueAnalyseAt, param_analyse);
                 System.out.println(v + " " + sensitivity);
             }
+            changeVar(beforeChange, param_change);
         }
         
     }
