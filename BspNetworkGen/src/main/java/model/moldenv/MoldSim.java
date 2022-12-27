@@ -71,25 +71,23 @@ public class MoldSim implements Displayer {
 	    //F = new Color(map.getRGB((int)(Fdir.x), (int)(Fdir.y))).getRed();
 	    //FL = new Color(map.getRGB((int)(FLdir.x), (int)(FLdir.y))).getRed();
 	    //FR = new Color(map.getRGB((int)(FRdir.x), (int)(FRdir.y))).getRed();
-            F = map.getRGB((int) (Fdir.x), (int) (Fdir.y));
-            int f = dataPointImage.getRGB((int) (Fdir.x), (int) (Fdir.y))>>8;
-            F = (F > f) ? F : f;
-            FL = map.getRGB((int) (FLdir.x), (int) (FLdir.y));
-            int fl = dataPointImage.getRGB((int) (FLdir.x), (int) (FLdir.y))>>8;
-            FL = (FL > fl) ? FL : fl;
-            FR = map.getRGB((int) (FRdir.x), (int) (FRdir.y));
-            int fr = dataPointImage.getRGB((int) (FRdir.x), (int) (FRdir.y))>>8;
-            FR = (FR > fr) ? FR : fr;
-            //System.out.println(F + ", comp " + FL + "and FR");
-            if (F > FL && F > FR) {
-                return true;
-            }
+            F = map.getRGB((int) (Fdir.x), (int) (Fdir.y))>>16 & 0xFF;
+            int f = dataPointImage.getRGB((int) (Fdir.x), (int) (Fdir.y))>>20 & 0xFF;
+            //F = (F > f) ? F : f;
+	    F += f;
+            FL = map.getRGB((int) (FLdir.x), (int) (FLdir.y))>>16 & 0xFF;
+            int fl = dataPointImage.getRGB((int) (FLdir.x), (int) (FLdir.y))>>20 & 0xFF;
+            //FL = (FL > fl) ? FL : fl;
+	    FL += fl;
+            FR = map.getRGB((int) (FRdir.x), (int) (FRdir.y))>>16 & 0xFF;
+            int fr = dataPointImage.getRGB((int) (FRdir.x), (int) (FRdir.y))>>20 & 0xFF;
+            //FR = (FR > fr) ? FR : fr;
+	    FR += fr;
+	    
+            if (F > FL && F > FR)  return true;
             if (F < FL && F < FR) {
-                if (Math.random() < .5) {
-                    this.turnLeft();
-                    return true;
-                }
-                this.turnRight();
+                if (Math.random() < .5) this.turnLeft();
+		else this.turnRight();
                 return true;
             }
             if (FL < FR) {
@@ -106,13 +104,10 @@ public class MoldSim implements Displayer {
         public void turnLeft() {
             this.dir = dir.rotate(-angle);
         }
-
         public void turnRight() {
             this.dir = dir.rotate(angle);
         }
-
         public void move() {
-            
             this.pos.x = wrap(this.pos.x + this.dir.x, map.getWidth());
             this.pos.y = wrap(this.pos.y + this.dir.y, map.getHeight());
         }
@@ -128,12 +123,22 @@ public class MoldSim implements Displayer {
     private float angle;
     private BufferedImage dataPointImage, newmap, trace;
 
+    public void setOffsetLength(float offsetLength) {
+	this.offsetLength = offsetLength;
+    }
+
+    public void setAngle(float angle) {
+	this.angle = angle;
+    }
+    
+    
+
     public MoldSim(int agentCount, float offsetLength, float angle, int[] sol, int width, int height) {
         this.mapWidth = width;
         this.mapHeight = height;
         this.agentCount = agentCount;
         this.offsetLength = offsetLength;
-        this.angle = angle;
+        this.angle = (float)(Math.PI / 4); //angle;
         populateSwarm();
 
         dataPointImage = dataPointImageFromSol(sol);
@@ -154,7 +159,6 @@ public class MoldSim implements Displayer {
     private int calcDepAtDist(int val, int x1, int y1, int x2, int y2) {
         return (int)(val / Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
     }
-
     public BufferedImage dataPointImageFromSol(int[] sol) {
         BufferedImage dataImage = new BufferedImage(mapWidth, mapHeight, BufferedImage.TYPE_4BYTE_ABGR);
 
@@ -270,9 +274,9 @@ public class MoldSim implements Displayer {
 
     @Override
     public void display(Graphics2D g, int width, int height) {
-        g.setColor(Color.black);
-        g.fillRect(0, 0, width, height);
+	g.setColor(Color.black);
+	g.fillRect(0, 0, width, height);
         g.drawImage(map, null, 0, 0);
-        g.drawImage(dataPointImage, null, 0, 0);
+	g.drawImage(dataPointImage, null, 0, 0);
     }
 }

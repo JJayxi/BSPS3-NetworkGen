@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("resource/france/templatemap_quartersize.png"));
+            img = ImageIO.read(new File("resource/testmap.png")); //resource/france/templatemap_quartersize.png"));
         } catch (Exception e) {}
         
         nodeStep = new NodeStep(img,
@@ -631,7 +631,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             agentCountLabel.setText(""+ agentCountSlider.getValue());
             offsetLengthLabel.setText(""+ offsetLengthSlider.getValue());
-            turningAngleLabel.setText(""+ Math.round((agentCountSlider.getValue() * Math.PI / 200) * 100) / 100.);
+            turningAngleLabel.setText(""+ Math.round((turningAngleSlider.getValue() * Math.PI / 400) * 100) / 100.);
             
         }
     }
@@ -654,7 +654,9 @@ public class MainFrame extends javax.swing.JFrame {
             } catch (Exception e) {}
         }
     }//GEN-LAST:event_loadMapButtonActionPerformed
-
+    
+    //<editor-fold desc="Node step actions">
+    
     private void populationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_populationSliderStateChanged
         nodeStep.setPopulationSize(populationSlider.getValue());
         populationSizeLabel.setText("" + populationSlider.getValue());
@@ -739,6 +741,7 @@ public class MainFrame extends javax.swing.JFrame {
         updateView();
     }//GEN-LAST:event_resetButtonActionPerformed
     
+    //</editor-fold>
    
     private void startSlimeSimulationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSlimeSimulationButtonActionPerformed
         current_state = MOLD_SIM_STATE;
@@ -765,11 +768,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_startSlimeSimulationButtonActionPerformed
 
     private void slimeResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slimeResetButtonActionPerformed
-        if(timer.isRunning())timer.stop();
+        if(timer != null && timer.isRunning())timer.stop();
         moldsim = new MoldSim(
                 agentCountSlider.getValue(),
                 offsetLengthSlider.getValue(),
-                (float)(agentCountSlider.getValue() * Math.PI / 200), 
+                (float)(turningAngleSlider.getValue() * Math.PI / 200), 
                 nodeStep.getEnvironment().exportForSlimeMold(nodeStep.getGA().getBestSol()),
                 nodeStep.getEnvironment().getWidth(), 
                 nodeStep.getEnvironment().getHeight());
@@ -781,13 +784,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_agentCountSliderStateChanged
 
     private void offsetLengthSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_offsetLengthSliderStateChanged
-        slimeResetButton.doClick();
-        updateView();
+        moldsim.setOffsetLength(offsetLengthSlider.getValue());
+	updateView();
     }//GEN-LAST:event_offsetLengthSliderStateChanged
 
     private void turningAngleSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_turningAngleSliderStateChanged
-        slimeResetButton.doClick();
-        updateView();
+        moldsim.setAngle((float)(turningAngleSlider.getValue() * Math.PI / 200));
+	updateView();
     }//GEN-LAST:event_turningAngleSliderStateChanged
 
     private void nodeRadiusSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nodeRadiusSliderMouseReleased
