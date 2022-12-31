@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("resource/testmap.png")); //resource/france/templatemap_quartersize.png"));
+            img = ImageIO.read(new File("resource/france/templatemap_quartersize.png"));
         } catch (Exception e) {}
         
         nodeStep = new NodeStep(img,
@@ -103,6 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
         slimeResetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1200, 600));
 
         nodeStepPanel.setPreferredSize(new java.awt.Dimension(400, 456));
 
@@ -477,11 +478,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        agentCountLabel.setText("jLabel18");
+        agentCountLabel.setText("3000");
 
-        offsetLengthLabel.setText("jLabel19");
+        offsetLengthLabel.setText("30");
 
-        turningAngleLabel.setText("jLabel20");
+        turningAngleLabel.setText("0.32");
 
         slimeResetButton.setText("Reset");
         slimeResetButton.addActionListener(new java.awt.event.ActionListener() {
@@ -499,32 +500,31 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(slimeMoldPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(slimeResetButton))
+                        .addComponent(slimeResetButton)
+                        .addContainerGap(374, Short.MAX_VALUE))
                     .addGroup(slimeMoldPanelLayout.createSequentialGroup()
-                        .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
+                        .addComponent(jLabel12)
+                        .addGap(0, 383, Short.MAX_VALUE))
+                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(slimeMoldPanelLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(offsetLengthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(agentCountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(slimeMoldPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel17)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(turningAngleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(agentCountLabel)
-                                    .addComponent(offsetLengthLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(turningAngleLabel))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(offsetLengthSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(agentCountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(slimeMoldPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(turningAngleSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(agentCountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(offsetLengthLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(turningAngleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         slimeMoldPanelLayout.setVerticalGroup(
             slimeMoldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -560,7 +560,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nodeStepPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(slimeMoldPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(slimeMoldPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -768,14 +768,16 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_startSlimeSimulationButtonActionPerformed
 
     private void slimeResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_slimeResetButtonActionPerformed
-        if(timer != null && timer.isRunning())timer.stop();
+        
         moldsim = new MoldSim(
                 agentCountSlider.getValue(),
                 offsetLengthSlider.getValue(),
                 (float)(turningAngleSlider.getValue() * Math.PI / 200), 
                 nodeStep.getEnvironment().exportForSlimeMold(nodeStep.getGA().getBestSol()),
                 nodeStep.getEnvironment().getWidth(), 
-                nodeStep.getEnvironment().getHeight());
+                nodeStep.getEnvironment().getHeight(),
+		nodeStep.getEnvironment().getPopmap()
+	);
     }//GEN-LAST:event_slimeResetButtonActionPerformed
 
     private void agentCountSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_agentCountSliderStateChanged
@@ -808,7 +810,7 @@ public class MainFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

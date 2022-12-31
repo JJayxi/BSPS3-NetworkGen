@@ -45,71 +45,64 @@ public class MoldSim implements Displayer {
 
     class Agent {
 
-        public static final int agentWeight = -524288; //(new Color(255, 0, 0, 0xF8)).getRGB()
+        public static final int agentWeight = -524288; ////(new Color(255, 0, 0, 0xF8)).getRGB()
         Vect pos, dir;
 
         public Agent(float x, float y) {
             pos = new Vect(x, y);
             dir = (new Vect((float) Math.random() * 2 - 1, (float) Math.random() * 2 - 1)).setMag(1);
-            //System.out.println((new Color(agentWeight<<16)).getRed());
         }
 
         public int getWeight() {
             return agentWeight;
         }
 
-        public boolean smell() {
+        public void smell() {
             int F, FL, FR;
 
-            Vect offsetDirection = this.dir.copy().setMag(offsetLength);
-            Vect leftVector = offsetDirection.rotate((float) (-Math.PI * .25));
-            Vect rightVector = offsetDirection.rotate((float) (Math.PI * .25));
-            Vect Fdir = new Vect(wrap(this.pos.x + offsetDirection.x, map.getWidth()), wrap(this.pos.y + offsetDirection.y, map.getHeight()));
-            Vect FLdir = new Vect(wrap(this.pos.x + leftVector.x, map.getWidth()), wrap(this.pos.y + leftVector.y, map.getHeight()));
-            Vect FRdir = new Vect(wrap(this.pos.x + rightVector.x, map.getWidth()), wrap(this.pos.y + rightVector.y, map.getHeight()));
+            Vect offdir = dir.copy().setMag(offsetLength);
+            Vect leftdir = offdir.rotate((float) (-Math.PI * .25));
+            Vect rightdir = offdir.rotate((float) (Math.PI * .25));
+            Vect Fdir = new Vect(wrap(this.pos.x + offdir.x, map.getWidth()), wrap(this.pos.y + offdir.y, map.getHeight()));
+            Vect FLdir = new Vect(wrap(this.pos.x + leftdir.x, map.getWidth()), wrap(this.pos.y + leftdir.y, map.getHeight()));
+            Vect FRdir = new Vect(wrap(this.pos.x + rightdir.x, map.getWidth()), wrap(this.pos.y + rightdir.y, map.getHeight()));
 
-	    //F = new Color(map.getRGB((int)(Fdir.x), (int)(Fdir.y))).getRed();
-	    //FL = new Color(map.getRGB((int)(FLdir.x), (int)(FLdir.y))).getRed();
-	    //FR = new Color(map.getRGB((int)(FRdir.x), (int)(FRdir.y))).getRed();
-            F = map.getRGB((int) (Fdir.x), (int) (Fdir.y))>>16 & 0xFF;
-            int f = dataPointImage.getRGB((int) (Fdir.x), (int) (Fdir.y))>>20 & 0xFF;
+            F = map.getRGB((int) (Fdir.x), (int) (Fdir.y))>>24;
+            int f = dataPointImage.getRGB((int) (Fdir.x), (int) (Fdir.y))>>24;
             //F = (F > f) ? F : f;
 	    F += f;
-            FL = map.getRGB((int) (FLdir.x), (int) (FLdir.y))>>16 & 0xFF;
-            int fl = dataPointImage.getRGB((int) (FLdir.x), (int) (FLdir.y))>>20 & 0xFF;
+            FL = map.getRGB((int) (FLdir.x), (int) (FLdir.y))>>24;
+            int fl = dataPointImage.getRGB((int) (FLdir.x), (int) (FLdir.y))>>24;
             //FL = (FL > fl) ? FL : fl;
 	    FL += fl;
-            FR = map.getRGB((int) (FRdir.x), (int) (FRdir.y))>>16 & 0xFF;
-            int fr = dataPointImage.getRGB((int) (FRdir.x), (int) (FRdir.y))>>20 & 0xFF;
+            FR = map.getRGB((int) (FRdir.x), (int) (FRdir.y))>>24;
+            int fr = dataPointImage.getRGB((int) (FRdir.x), (int) (FRdir.y))>>24 ;
             //FR = (FR > fr) ? FR : fr;
 	    FR += fr;
 	    
-            if (F > FL && F > FR)  return true;
+            if (F > FL && F > FR)  return;
             if (F < FL && F < FR) {
-                if (Math.random() < .5) this.turnLeft();
-		else this.turnRight();
-                return true;
+                if (Math.random() < .5) 
+		    this.turnLeft();
+		else 
+		    this.turnRight();
+                return;
             }
-            if (FL < FR) {
+            if (FL < FR)
                 this.turnRight();
-                return true;
-            }
-            if (FR < FL) {
-                this.turnLeft();
-                return true;
-            }
-            return false;
+	    else if (FR < FL) 
+		this.turnLeft();
         }
 
         public void turnLeft() {
-            this.dir = dir.rotate(-angle);
+            dir = dir.rotate(-angle);
         }
         public void turnRight() {
-            this.dir = dir.rotate(angle);
+            dir = dir.rotate(angle);
         }
         public void move() {
-            this.pos.x = wrap(this.pos.x + this.dir.x, map.getWidth());
-            this.pos.y = wrap(this.pos.y + this.dir.y, map.getHeight());
+            this.pos.x = wrap(this.pos.x + dir.x, map.getWidth());
+            this.pos.y = wrap(this.pos.y + dir.y, map.getHeight());
         }
 
     }
@@ -121,7 +114,7 @@ public class MoldSim implements Displayer {
     private float offsetLength;
     private int agentCount;
     private float angle;
-    private BufferedImage dataPointImage, newmap, trace;
+    private BufferedImage dataPointImage, newmap, popmap;
 
     public void setOffsetLength(float offsetLength) {
 	this.offsetLength = offsetLength;
@@ -133,11 +126,12 @@ public class MoldSim implements Displayer {
     
     
 
-    public MoldSim(int agentCount, float offsetLength, float angle, int[] sol, int width, int height) {
+    public MoldSim(int agentCount, float offsetLength, float angle, int[] sol, int width, int height, BufferedImage popmap) {
         this.mapWidth = width;
         this.mapHeight = height;
         this.agentCount = agentCount;
         this.offsetLength = offsetLength;
+	this.popmap = popmap;
         this.angle = (float)(Math.PI / 4); //angle;
         populateSwarm();
 
@@ -153,7 +147,7 @@ public class MoldSim implements Displayer {
         gm = newmap.createGraphics();
         gm.setColor(Color.black);
         gm.fillRect(0, 0, width, height);
-        setAttenuation(0.98f);
+        setAttenuation(0.96f);
     }
 
     private int calcDepAtDist(int val, int x1, int y1, int x2, int y2) {
@@ -184,7 +178,7 @@ public class MoldSim implements Displayer {
                         v = calcDepAtDist(sol[k * 3 + 2] / max_reach,  sol[k * 3 + 0], sol[k * 3 + 1], j, i);
                     }
                     if (v > maxval) {
-                        maxval = v;
+                        maxval = v; 
                     }
                 }
                 damap[i][j] = maxval;
@@ -232,10 +226,10 @@ public class MoldSim implements Displayer {
                     a.getWeight()
             );
         });
-        
+    
     }
 
-    private float attenuation = 0.9f;
+    private float attenuation;
     private float[] baseKernelMatrix = {
         1 / 14f, 1 / 7f, 1 / 14f,
         1 / 7f, 1 / 7f, 1 / 7f,
@@ -253,10 +247,7 @@ public class MoldSim implements Displayer {
     }
 
     private void relaxationStep() {
-
         (new ConvolveOp(diffuseKernel)).filter(map, newmap);
-        //Graphics2D g2 = newmap.createGraphics();
-        //g2.drawImage(dataPointImage, null, 0, 0);
         BufferedImage temp = newmap;
         newmap = map;
         map = temp;
@@ -272,10 +263,14 @@ public class MoldSim implements Displayer {
 
     }
 
+
     @Override
     public void display(Graphics2D g, int width, int height) {
 	g.setColor(Color.black);
 	g.fillRect(0, 0, width, height);
+	g.drawImage(popmap, 
+		0, 0, width, height, 
+		0, 0, popmap.getWidth(), popmap.getHeight(), null);
         g.drawImage(map, null, 0, 0);
 	g.drawImage(dataPointImage, null, 0, 0);
     }

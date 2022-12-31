@@ -54,7 +54,7 @@ public class GeneticAlgorithm {
     }
     
     public void envUpdated() {
-        population = evaluatePopulation(population);
+        evaluatePopulation(population);
     }
     
     public void setPopulationSize(int populationSize) {
@@ -104,6 +104,18 @@ public class GeneticAlgorithm {
         return p2.a.clone();
     }
     
+    private int[] crossAgent(int[] parent1, int[] parent2) {
+	int[] crossoverSol = new int[env.getSolLen()];
+	int crossoverPoint = (int)(Math.random() * env.getSolLen());
+	for(int j = 0; j < env.getSolLen(); j++) {
+	    if(j >= crossoverPoint) 
+		crossoverSol[j] = parent1[j];
+	    else 
+		crossoverSol[j] = parent2[j];
+	}
+	return crossoverSol;
+    }
+    
     public ArrayList<Pair<int[], Integer>> crossover(ArrayList<Pair<int[], Integer>> population) {
         ArrayList<Pair<int[], Integer>> crossed = new ArrayList<>();
         
@@ -111,28 +123,20 @@ public class GeneticAlgorithm {
             if(Math.random() < crossoverRate) {
                 int[] parent1 = selectAgent(population);
                 int[] parent2 = selectAgent(population);
-                
-                int[] crossoverSol = new int[env.getSolLen()];
-                int crossoverPoint = (int)(Math.random() * env.getSolLen()); /// 2);
-                for(int j = 0; j < env.getSolLen(); j++) {
-                    if(j >= crossoverPoint /** 2*/) crossoverSol[j] = parent1[j];
-                    else crossoverSol[j] = parent2[j];
-                }
-                crossed.add(new Pair(crossoverSol, 0));
+                int[] crossedAgent = crossAgent(parent1, parent2);
+                crossed.add(new Pair(crossedAgent, 0));
             } else {
                 crossed.add(new Pair(selectAgent(population), 0));            
             }
         }
-        
         return crossed;
     }
     
     //private double lerp(double val1, double val2, double x) {
     //    return val1 * (1 - Math.min(x, 1)) + val2 * Math.min(x, 1);
     //}
-
+    private int maxDev = 150;
     public ArrayList<Pair<int[], Integer>> mutate(ArrayList<Pair<int[], Integer>> population) {
-        int maxDev = 300; //
         for(int i = 0; i < population.size(); i++) {
             for(int j = 0; j < env.getSolLen(); j++) {
                 if(Math.random() > mutationRate)continue;
@@ -148,38 +152,35 @@ public class GeneticAlgorithm {
         return population;
     }
     
-    public ArrayList<Pair<int[], Integer>> evaluatePopulation(ArrayList<Pair<int[], Integer>> population) {
+    public void evaluatePopulation(ArrayList<Pair<int[], Integer>> population) {
         population.stream().parallel().forEach(
                 (Pair<int[], Integer> p) -> {
                     p.b = env.eval(p.a);
                 }
         );
-        //for(int i = 0; i < populationSize; i++) {
-        //    population.get(i).b = env.eval(population.get(i).a);
-        //}
-         
-        return population;
     }
     
     public void performGeneration() {
-       ArrayList<Pair<int[], Integer>> pop = crossover(population);
-       pop = mutate(pop);
-       pop = evaluatePopulation(pop);
-       pop.sort((Pair<int[], Integer> p1, Pair<int[], Integer> p2) -> p2.b - p1.b);
-       genCounter++;
-       population = pop;
+	
+        ArrayList<Pair<int[], Integer>> pop = crossover(population);
+        pop = mutate(pop);
+	evaluatePopulation(pop);
+        pop.sort((p1, p2) -> p2.b - p1.b);
+        genCounter++;
+        population = pop;
     }
     
     public Pair<int[], Integer> getBest() {
-        return population.get(0);
+
+        return population.stream().reduce(population.get(0), (p1, p2) -> p1.b > p2.b ? p1 : p2);
     }
     
     public int[] getBestSol() {
-        return population.get(0).a;
+        return getBest().a;
     }
     
     public Pair<int[], Integer> getWorst() {
-        return population.get(population.size() - 1);
+        return population.stream().reduce(population.get(0), (p1, p2) -> p1.b < p2.b ? p1 : p2);
     }
     
     public Pair<int[], Integer> getMedian() {

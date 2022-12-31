@@ -8,6 +8,7 @@ public class Environment implements GAEnv{
     private int numNodes;
     private int nodeRadius;
     private int proxPenalty;
+    private BufferedImage popmap;
     
     private int[][] map;
     private int[][] processed;
@@ -17,11 +18,18 @@ public class Environment implements GAEnv{
         this.numNodes = numNodes;
         this.nodeRadius = nodeRadius;
         this.proxPenalty = proxPenalty;
+	this.popmap = mapImage;
         
         map = imageToMap(mapImage);
         System.out.println("Preprocessing map");
         preprocess();
     }
+
+    public BufferedImage getPopmap() {
+	return popmap;
+    }
+    
+    
 
     public int getMaxValue() {
         return map.length;
@@ -51,6 +59,7 @@ public class Environment implements GAEnv{
     
     public void setMap(BufferedImage mapImage) {
         map = imageToMap(mapImage);
+	popmap = mapImage;
         preprocess();
     }
 
@@ -75,16 +84,12 @@ public class Environment implements GAEnv{
     }
     
     private int[][] imageToMap(BufferedImage image) {
+	maxdist = (int)(Math.sqrt(image.getWidth() * image.getWidth() * 2));
         int[][] map = new int[image.getHeight()][image.getWidth()];
         for(int i = 0; i < image.getHeight(); i++) {
             for(int j = 0; j < image.getWidth(); j++) {
-                Color c = new Color(image.getRGB(j, i));
-                int r = c.getRed();
-                int g = c.getGreen();
-                int b = c.getBlue();
-                int avg = r;
-                        
-                map[i][j] = 255 - avg;
+                Color c = new Color(image.getRGB(j, i));       
+                map[i][j] = 255 - c.getRed();
             }
         }
         
@@ -95,19 +100,21 @@ public class Environment implements GAEnv{
         processed = new int[map.length][map[0].length];
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[0].length; j++) {
+		
                 processed[i][j] = reach(j, i);
             }
         }
     }
     
-    private int reach(int x, int y) {
+    private int reach_old(int x, int y) {
         int sum = 0;
+	int lasth = -1;
         for(int k = 0; k <= nodeRadius; k++) {
-            
             double a = Math.PI * k/nodeRadius + Math.PI / 2;
             int h = y + (int)(Math.sin(a) * nodeRadius);
-            if(h < 0 || h >= map.length) continue;
-            
+            if(h < 0 || h >= map.length || h == lasth) continue;
+
+            lasth = h;
             int dw = (int)(Math.cos(a) * nodeRadius);
             
             for(int w = x + dw; w < x - dw; w++) {
@@ -117,6 +124,21 @@ public class Environment implements GAEnv{
         }
         
         return sum;
+    }
+    
+    private int reach(int x, int y) {
+	int sum = 0;
+	for(int h = -nodeRadius; h <= nodeRadius; h++) {
+	    double a = Math.acos((double)h / nodeRadius);
+	    if(h + y < 0 || h + y >= map.length) continue;
+	    int dw = (int)(Math.sin(a) * nodeRadius);
+	    for(int w = x - dw; w <= x + dw; w++) {
+                if(w < 0 || w >= map[0].length)continue;
+                sum += map[h + y][w];
+            }
+	}
+	
+	return sum;
     }
     
     @Override
@@ -154,15 +176,19 @@ public class Environment implements GAEnv{
         }
         
         int totalPenalty = 0;
-        for(int i = 0; i < numNodes; i++) {
-            for(int j = 0; j < numNodes; j++) {
-                if(i == j)continue;
-                totalPenalty += penalty(sol[i], sol[i + 1], sol[j], sol[j + 1]);
-            }
-        }
+        for(int i = 0; i < numNodes * 2 - 1; i++)
+	for(int j = i + 1; j < numNodes * 2 - 1; j++)
+	    if(i != j)
+	    totalPenalty += penalty(
+		sol[i], sol[i + 1], 
+		sol[j], sol[j + 1]);
+	/*
+		sol[2 * i], sol[2 * i + 1], 
+		sol[2 * j], sol[2 * j + 1]);*/
+            
         
         
-        return totalReach - totalPenalty;
+        return totalReach / numNodes - totalPenalty / (numNodes);
     }
     
     public int[] exportForSlimeMold(int[] sol) {
@@ -175,10 +201,11 @@ public class Environment implements GAEnv{
         return ar;
     }
     
+    private int maxdist;
     public int penalty(int x1, int y1, int x2, int y2) {
         int dist = (int) Point2D.distance(x1, y1, x2, y2) + 1;
-        
-        return 10000 * proxPenalty / dist;
+        return 30000 * proxPenalty / dist;
+        //return proxPenalty * (maxdist - dist);
     }
     
 }
