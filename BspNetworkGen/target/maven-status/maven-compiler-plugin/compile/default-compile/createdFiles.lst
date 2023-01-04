@@ -19,6 +19,7 @@ model\Displayer.class
 model\NodeStep.class
 view\MainFrame$10.class
 view\MainFrame$7.class
+view\MainFrame$20.class
 view\MainFrame$5.class
 view\MainFrame$16.class
 view\MainFrame$11.class

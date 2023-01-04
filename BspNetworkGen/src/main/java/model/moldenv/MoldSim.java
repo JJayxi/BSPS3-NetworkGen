@@ -268,9 +268,7 @@ public class MoldSim implements Displayer {
     public void display(Graphics2D g, int width, int height) {
 	g.setColor(Color.black);
 	g.fillRect(0, 0, width, height);
-	g.drawImage(popmap, 
-		0, 0, width, height, 
-		0, 0, popmap.getWidth(), popmap.getHeight(), null);
+	g.drawImage(popmap, null, 0, 0);
         g.drawImage(map, null, 0, 0);
 	g.drawImage(dataPointImage, null, 0, 0);
     }
